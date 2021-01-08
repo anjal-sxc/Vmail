@@ -1,0 +1,7 @@
+main {
+    height: 100%;
+}
+
+.dashboardLinks a:hover {
+    text-decoration: none;
+}
