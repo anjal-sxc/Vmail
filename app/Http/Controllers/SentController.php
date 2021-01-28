@@ -13,7 +13,7 @@ class SentController extends Controller
     public function index()
     {
         //
-        return view('dashboard.sent.index', ['sentMails'=>Sent::all()]);
+        return view('dashboard.sent.index', ['sentMails'=>Sent::where('user_id', auth()->id())->get()]);
 
     }
 
@@ -36,18 +36,14 @@ class SentController extends Controller
         $subject = $request->get('subject');
         $body = $request->get('body');
 
-//        $data['from'] = $fromEmail;
-//        $data['to'] = $to;
-//        $data['subject'] = $subject;
-//        $data['body'] = $body;
-
-
+        //Sends mail to mailtrap.io
         Mail::raw($body, function ($message) use ($fromEmail, $to, $subject) {
             $message->from($fromEmail);
             $message->subject($subject);
             $message->to($to);
         });
 
+        //sends data to database
 
         Sent::create([
             'to' => $to,

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Inbox;
+use App\User;
 use App\Sent;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -19,8 +20,8 @@ class InboxController extends Controller
         $user = auth()->user();
 
         $client = new Client();
-        $token = 'f3825659be47f337ed78cebfe43976d5';
-        $inbox_id = 1162893;
+        $token = '22e0bb4b73f6396641f1e9a3efcd61f0';
+        $inbox_id = 1179412;
         $uri = 'https://mailtrap.io/api/v1/inboxes/'.$inbox_id.'/messages/';
         $headers = [
             'Authorization' => 'Bearer ' . $token,
@@ -33,28 +34,26 @@ class InboxController extends Controller
 
         $emails = json_decode($response->getBody()->getContents());
 
-        $data = $uri.$emails[0]->id.'/body.htmlsource';
-
-
-
-
+        
         if (!empty($emails)) {
+            // $data = $uri.$emails[0]->id.'/body.htmlsource';
             foreach ($emails as $email) {
-
+                
                 $response = $client->get($uri.$email->id.'/body.txt', [
                     'headers' => $headers,
                 ]);
-
                 $body = $response->getBody()->getContents();
-
-
-                Inbox::updateOrCreate([
-                    'email_id' => $email->id,
-                   'from' => $email->from_email,
-                   'subject' => $email->subject,
-                   'body' => $body,
-                    'user_id' => $user->id,
-                ]);
+                $userId = User::where('email', explode('@', $email->to_email)[0])->first();
+                if (!empty($userId)) {
+                    $userId = $userId->id;
+                    Inbox::updateOrCreate([
+                        'email_id' => $email->to_email,
+                        'from' => $email->from_email,
+                        'subject' => $email->subject,
+                        'body' => $body,
+                        'user_id' => $userId,
+                    ]);
+                }
 
                 } // End foreach
 
