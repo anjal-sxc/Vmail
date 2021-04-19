@@ -18,7 +18,7 @@
 
                 <div class="card mb-4">
                     <div class="card-header"><i class="fas fa-table mr-1"></i>Sent Email</div>
-                    <div class="card-body">
+                    <div class="card-body" tabindex="1" onfocus="sayEmail2()">
                         <p>From: {{ auth()->user()->email }}.</p>
                         <p>To: {{ $sent->to }}.</p>
                         <p>Subject: {{ $sent->subject }}.</p>
@@ -30,20 +30,17 @@
                 <form method="POST" action="{{ route('sent') }}">
                     @csrf
                     <input type="hidden" name="id" value="{{ $sent->id }}">
-                    <button type="submit" class="btn btn-danger" tabindex="1">Delete</button>
+                    <button type="submit" class="btn btn-danger" tabindex="2">Delete</button>
                 </form>
-
-
-
-
-
-
             </div>
         </main>
-
     </div>
 
-
+    <script>
+    function sayEmail2() {
+        let email = $('.card-body').text();
+        say(email);
+    }</script>
 @endsection
 
 

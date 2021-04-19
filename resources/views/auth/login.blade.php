@@ -46,6 +46,9 @@
                                 <button type="submit" class="btn btn-primary" id="loginButton">
                                     {{ __('Login') }}
                                 </button>
+                                <a href="/" class="btn btn-primary" id="loginBack" >
+                                    Back
+                                </a>
 
                             </div>
                         </div>

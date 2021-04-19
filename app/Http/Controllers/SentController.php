@@ -37,7 +37,7 @@ class SentController extends Controller
         $body = $request->get('body');
 
         //Sends mail to mailtrap.io
-        Mail::raw($body, function ($message) use ($fromEmail, $to, $subject) {
+        Mail::raw($body, function ($message) use ($fromEmail, $to, $subject) { //closure function
             $message->from($fromEmail);
             $message->subject($subject);
             $message->to($to);

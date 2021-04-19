@@ -12,9 +12,6 @@
         <main>
             <div class="container-fluid">
                 <br>
-
-
-
                 <div id="layoutCompose">
                     <div id="layoutCompose_content">
                         <main>

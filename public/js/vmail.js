@@ -1,12 +1,17 @@
 $(document).ready(function () {
 
     // sleep time expects milliseconds
-    function sleep (time) {
+    function sleep(time) {
         return new Promise((resolve) => setTimeout(resolve, time));
     }
 
+    $('#loginBack').on('focus', function () {
+        say($(this).text());
+    });
+
+
     $('.nav-link').on('focus', function () {
-       say($(this).text());
+        say($(this).text());
     });
 
     $('.dashboardLinks a').on('focus', function () {
@@ -111,21 +116,22 @@ $(document).ready(function () {
     });
 
     $('.btn.btn-danger').on('focus', function () {
-       say('Delete email');
+        say('Delete email');
     });
 
     $('.btn.btn-success').on('focus', function () {
         say('Restore email');
     });
 
-    $('.emailDetails').on('click', function () {
-       let email = $('.card-body').text();
-       say(email);
+    $('.emailDetails').on('focus', function () {
+        console.log('here')
+        let email = $('.card-body').text();
+        say(email);
     });
 
     $('.emailRow').on('focus', function () {
         let subject = $(this).children('td').eq(2).text();
-        say('Email about '+subject);
+        say('Email about ' + subject);
     });
 
     $('.trashRow').on('focus', function () {

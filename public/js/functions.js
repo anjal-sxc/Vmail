@@ -1,6 +1,6 @@
- synth = window.speechSynthesis;
- pitch = 1
- rate = 0.9
+synth = window.speechSynthesis;
+pitch = 1
+rate = 0.9
 
 function say(message) {
     var utterThis = new SpeechSynthesisUtterance(message);
@@ -11,36 +11,36 @@ function say(message) {
     return;
 }
 
- window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
- const recognition = new SpeechRecognition();
+window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+const recognition = new SpeechRecognition();
 
- let emailBody = $('#emailBody');
- let emailSubject = $('#emailSubject');
- let emailTo = $('#emailTo');
- let speechToText = '';
- let bodyText = '';
+let emailBody = $('#emailBody');
+let emailSubject = $('#emailSubject');
+let emailTo = $('#emailTo');
+let speechToText = '';
+let bodyText = '';
 
 function listenEmailBody() {
 
 
     recognition.continuous = true;
 
-     if (bodyText.length) {
-         bodyText += ' ';
-     }
+    if (bodyText.length) {
+        bodyText += ' ';
+    }
 
-     recognition.start();
+    recognition.start();
 
-     recognition.onresult = (event) => {
+    recognition.onresult = (event) => {
 
-         current = event.resultIndex;
+        current = event.resultIndex;
 
         transcript = event.results[current][0].transcript;
 
         bodyText += transcript;
 
-         emailBody.val(bodyText);
-     }
+        emailBody.val(bodyText);
+    }
 
     recognition.onspeechend = function () {
         say('End');
@@ -52,82 +52,88 @@ function listenEmailBody() {
         emailBody.focus();
     }
 
- }
+}
 
- function listenEmailSubject() {
+function listenEmailSubject() {
+    recognition.stop();
+    recognition.start();
 
-     recognition.start();
+    recognition.onresult = (event) => {
 
-     recognition.onresult = (event) => {
+        current = event.resultIndex;
 
-         current = event.resultIndex;
+        transcript = event.results[0][0].transcript;
 
-         transcript = event.results[0][0].transcript;
+        speechToText = transcript;
 
-         speechToText = transcript;
+        emailSubject.val(speechToText);
+        recognition.stop();
+    }
 
-         emailSubject.val(speechToText);
-     }
+    recognition.onspeechend = function () {
+        say('End');
+        speechToText = '';
+    }
 
-     recognition.onspeechend = function () {
-         say('End');
-         speechToText = '';
-     }
+    recognition.onerror = function () {
+        say('Try again');
+        emailSubject.focus();
+    }
+}
 
-     recognition.onerror = function () {
-         say('Try again');
-         emailSubject.focus();
-     }
- }
+function listenEmailTo() {
+    recognition.stop();
+    recognition.start();
 
- function listenEmailTo() {
+    recognition.onresult = (event) => {
 
-     recognition.start();
+        current = event.resultIndex;
 
-     recognition.onresult = (event) => {
+        transcript = event.results[0][0].transcript;
 
-         current = event.resultIndex;
+        speechToText = transcript;
 
-         transcript = event.results[0][0].transcript;
+        emailTo.val(speechToText);
+        recognition.stop();
+    }
 
-         speechToText = transcript;
+    recognition.onspeechend = function () {
+        say('Input recorded');
+    }
 
-         emailTo.val(speechToText);
-     }
+    recognition.onerror = function (e) {
+        console.log(e);
+        say('Try again');
+        emailTo.focus();
+    }
+}
 
-     recognition.onspeechend = function () {
-         say('End');
-     }
-
-     recognition.onerror = function (e) {
-         console.log(e);
-         say('Try again');
-         emailTo.focus();
-     }
- }
-
- function listenInput(element) {
+function listenInput(element) {
 
     recognition.stop();
-     recognition.start();
+    recognition.start();
 
-     recognition.onresult = (event) => {
+    recognition.onresult = (event) => {
 
-         current = event.resultIndex;
+        current = event.resultIndex;
 
-         transcript = event.results[0][0].transcript;
+        transcript = event.results[0][0].transcript;
 
-         speechToText = transcript;
+        speechToText = transcript;
 
-         element.val(speechToText);
-     }
+        element.val(speechToText);
+        recognition.stop();
+    }
 
-     recognition.onspeechend = function () {
-         say('End');
-     }
+    recognition.onspeechend = function () {
+        say('End');
+        recognition.stop();
+    }
 
-     recognition.onerror = function () {
-         say('Try again');
-         element.focus();
-     }
- }
+    recognition.onerror = function (e) {
+        console.log(e);
+        say('Try again');
+        element.focus();
+        recognition.stop();
+    }
+}

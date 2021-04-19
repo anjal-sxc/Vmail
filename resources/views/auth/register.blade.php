@@ -28,7 +28,7 @@
                         <div class="form-group row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
-                            <div class="col-md-6 flex" style="align-items: center">
+                            <div class="col-md-f6 flex" style="align-items: center">
                                 <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
                                 <span>@vmail.com</span>
 

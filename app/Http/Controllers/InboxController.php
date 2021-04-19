@@ -88,8 +88,8 @@ class InboxController extends Controller
 
     public function show(Inbox $inbox, $id)
     {
-        //
         $inbox = Inbox::findOrFail($id);
+        // dd($inbox);
 
         return view('dashboard.inbox.email', ['inbox'=>$inbox]);
 
